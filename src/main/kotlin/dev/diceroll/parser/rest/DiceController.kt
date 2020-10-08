@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedReader
@@ -18,6 +19,10 @@ class DiceController(@Value("#{environment['home-redirect-uri']}") val redirectU
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Could not parse dice expression") // 400
     @ExceptionHandler(ParseException::class)
     fun parseException() { }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Could not process request") // 400
+    @ExceptionHandler(value=[HttpMessageNotReadableException::class, IllegalArgumentException::class])
+    fun badRequest() { }
 
     @GetMapping(path = ["/"], produces = [MediaType.TEXT_HTML_VALUE])
     fun home(): ResponseEntity<Any> {
@@ -133,6 +138,9 @@ View the details of what was rolled by using `/roll`:
 
 Or get the result in JSON (the default):
     http ${url}/roll\?dice\=2d6 "Accept: application/json"
+    
+POST works too:
+    http --form POST ${url}/eval dice='2d6+2'
 """
     }
 
@@ -145,6 +153,9 @@ View the details of what was rolled by using `/roll`:
 
 Or get the result in JSON (the default):
     curl ${url}/roll\?dice\=2d6 -H "Accept: application/json"
+
+POST works too:
+    curl ${url}/eval --data-urlencode 'dice=2d6+2'
 """
     }
 
@@ -159,6 +170,9 @@ View the details of what was rolled by using `/roll`:
 Or get the result in JSON (the default):
     GET ${url}/roll\?dice\=2d6 
     Accept: application/json
+
+POST works too:
+    POST ${url}/eval dice=2d6
 """
     }
 }
