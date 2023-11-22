@@ -1,6 +1,7 @@
 package dev.diceroll.parser.rest
 
 import dev.diceroll.parser.*
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.io.BufferedReader
 import java.net.URI
-import javax.servlet.http.HttpServletRequest
 
 @RestController
 class DiceController(@Value("#{environment['home-redirect-uri']}") val redirectUri: String) {
