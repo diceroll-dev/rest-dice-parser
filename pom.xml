@@ -109,6 +109,13 @@
                     <finalName>${project.artifactId}</finalName>
                     <mainClass>dev.diceroll.parser.rest.ApplicationKt</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
