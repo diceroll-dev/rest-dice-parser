@@ -155,6 +155,15 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <configuration>
+                    <projectType>application</projectType>
+                    <includeTestScope>true</includeTestScope>
+                    <outputFormat>json</outputFormat>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
