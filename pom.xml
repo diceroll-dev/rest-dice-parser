@@ -3,30 +3,65 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
     </parent>
     <groupId>io.bdemers.dice</groupId>
     <artifactId>rest-dice-parser</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Simple REST Dice Parser</name>
-    <description>Simple REST Dice Parser</description>
+    <description>Simple REST API making use of Dice Parser</description>
+
+    <organization>
+        <name>diceroll.dev</name>
+        <url>https://diceroll.dev</url>
+    </organization>
+
+    <url>https://diceroll.dev</url>
+    <inceptionYear>2020</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>https://github.com/diceroll-dev/dice-parser/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <scm child.scm.connection.inherit.append.path="false"
+         child.scm.developerConnection.inherit.append.path="false"
+         child.scm.url.inherit.append.path="false">
+        <connection>scm:git:https://github.com/${github.slug}.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/${github.slug}.git</developerConnection>
+        <url>https://github.com/${github.slug}</url>
+    </scm>
 
     <properties>
+        <github.org>diceroll-dev</github.org>
+        <github.project>rest-dice-parser</github.project>
+        <github.slug>${github.org}/${github.project}</github.slug>
         <java.version>21</java.version>
-        <kotlin.version>2.1.0</kotlin.version>
+        <kotlin.version>2.1.20</kotlin.version>
     </properties>
 
-    <dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>3.5.7</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
+    <dependencies>
         <dependency>
             <groupId>dev.diceroll</groupId>
             <artifactId>dice-parser</artifactId>
             <version>0.3.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -70,7 +105,16 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <finalName>${project.artifactId}</finalName>
+                    <mainClass>dev.diceroll.parser.rest.ApplicationKt</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>image</id>
+                        <goals>
+                            <goal>build-image-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
